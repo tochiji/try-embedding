@@ -28,7 +28,7 @@ def check(data):
     # 結果を表示
     print(f"基準文: {base_sentence}")
     for i, res in enumerate(result):
-        print(f"{i+1}位: {res[0]} ({res[1]})")
+        print(f"{i+1}位: {res[0][0:30]} ({res[1]})")
     
 
 # JSONファイルからデータを読み込む
