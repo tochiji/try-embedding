@@ -10,24 +10,51 @@ fn main() {
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let page = 1;
-    let response = fetch_url(page)?;
-    let document = Document::from_read(response)?;
+    let mut v = vec![];
 
-    for post_box in document.find(Class("post-box")) {
-        if let Some(post_title) = post_box.find(Class("post-tit")).next() {
-            println!("Title: {}", post_title.text());
+    for page in 1..=10 {
+        let response = fetch_url(page)?;
+        let document = Document::from_read(response)?;
+
+        for post_box in document.find(Class("post-box")) {
+            let mut title: String = "".to_string();
+            let mut date: String = "".to_string();
+            let mut url: String = "".to_string();
+
+            if let Some(post_title) = post_box.find(Class("post-tit")).next() {
+                title = post_title.text();
+            }
+            if let Some(post_date) = post_box.find(Class("post-date")).next() {
+                date = post_date.text();
+            }
+            if let Some(post_url) = post_box.find(Class("more-link")).next() {
+                url = post_url.attr("href").unwrap().to_string();
+            }
+
+            let item = Item::new(title, date, url);
+            v.push(item);
         }
-        if let Some(post_date) = post_box.find(Class("post-date")).next() {
-            println!("Date: {}", post_date.text());
-        }
-        if let Some(url) = post_box.find(Class("more-link")).next() {
-            println!("URL: {}", url.attr("href").unwrap());
-        }
-        println!("---");
     }
 
+    println!("{:#?}", v);
     Ok(())
+}
+
+#[derive(Debug)]
+struct Item {
+    title: String,
+    post_date: String,
+    url: String,
+}
+
+impl Item {
+    fn new(title: String, post_date: String, url: String) -> Self {
+        Self {
+            title,
+            post_date,
+            url,
+        }
+    }
 }
 
 fn fetch_url(page: i32) -> Result<Response, Box<dyn std::error::Error>> {
