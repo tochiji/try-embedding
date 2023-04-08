@@ -26,6 +26,14 @@ struct Usage {
     total_tokens: usize,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct Item {
+    title: String,
+    post_date: String,
+    url: String,
+    contents: String,
+}
+
 fn main() {
     match run() {
         Ok(_) => (),
@@ -34,8 +42,16 @@ fn main() {
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let embed = fetch_embeddings("Hello, world!")?;
-    println!("{:?}", embed);
+    // 同じフォルダの result.jsonを読み込む
+    let file = std::fs::File::open("result.json")?;
+    let reader = std::io::BufReader::new(file);
+    let items: Vec<Item> = serde_json::from_reader(reader)?;
+
+    for item in items {
+        let embed = fetch_embeddings(&item.contents)?;
+        println!("{:?}", embed);
+    }
+
     Ok(())
 }
 
