@@ -43,7 +43,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let json = serde_json::to_string(&v).unwrap();
-    println!("{}", json);
+    std::fs::write("result.json", json)?;
 
     Ok(())
 }
