@@ -11,7 +11,8 @@ $ pip install -r requirements.txt
 ```
 
 ```console
-pip install -U sentence-transformers
+pip install -U sentence-transformers openai
+pip install "openai[embeddings]"
 pip install flake8 black autopep8 pytest
 pip freeze > requirements.txt
 touch main.py
