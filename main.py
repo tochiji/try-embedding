@@ -38,7 +38,7 @@ def check(data):
 with open("sentences.json", "r") as file:
     data = json.load(file)
 
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")  # type: ignore
 
 for d in data:
     check(d)
