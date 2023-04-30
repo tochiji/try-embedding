@@ -46,7 +46,7 @@ fn run(word: &str) -> Result<(), Box<dyn std::error::Error>> {
         println!("Title: {}", rank.0);
         println!("URL: {}", rank.1);
         println!("Cosine Similarity: {}", rank.2);
-        println!("");
+        println!();
     }
 
     Ok(())

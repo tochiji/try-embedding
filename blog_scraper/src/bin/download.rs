@@ -80,8 +80,8 @@ fn fetch_contents(url: &str) -> Result<String, Box<dyn std::error::Error>> {
 
     if let Some(contents) = document.find(Class("toc_list")).next() {
         for li in contents.find(Name("li")) {
-            let text = li.text().replace("\n", "");
-            if text == "まとめ".to_string() {
+            let text = li.text().replace('\n', "");
+            if text == *"まとめ" {
                 continue;
             }
             result_contents += &text;
